@@ -39,7 +39,7 @@ class OpenAILlm(BaseLlm):
             api_key = self._openai_api_key,
             model=self._model,
             messages = messages,
-            max_tokens = self.max_tokens,
+            #max_tokens = self.max_tokens,
             **kwargs
         )
         end_time = datetime.now()
@@ -63,7 +63,7 @@ class OpenAILlm(BaseLlm):
             api_key = self._openai_api_key,
             model=self._model,
             messages = messages,
-            max_tokens = self.max_tokens,
+            #max_tokens = self.max_tokens,
             **kwargs
         )
         end_time = datetime.now()
@@ -85,7 +85,7 @@ class OpenAILlm(BaseLlm):
             api_key = self._openai_api_key,
             model=self._model,
             prompt = prompt,
-            max_tokens = self.max_tokens
+           # max_tokens = self.max_tokens
         )
         end_time = datetime.now()
 

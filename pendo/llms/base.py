@@ -2,7 +2,7 @@ from abc import ABC
 from typing import List
 from .message import Message
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 class BaseLlm(ABC):
     def __init__(self, max_tokens=4096):

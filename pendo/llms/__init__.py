@@ -8,7 +8,14 @@ LLM_MAPPING = {
     "llama": LlamaLlm,
 }
 
-def get_llm(llm_type: str, **kwargs):
-    if llm_type not in LLM_MAPPING:
-        raise ValueError(f"Unknown llm_type: {llm_type}")
+REGISERED_LLM = {}
+
+def register_llms(config):
+    REGISERED_LLM.update(config)
+
+def get_llm(registered_name):
+    if registered_name not in REGISERED_LLM:
+        raise ValueError(f"Unknown llm: {registered_name}")
+    llm_type = REGISERED_LLM[registered_name]["type"]
+    kwargs = REGISERED_LLM[registered_name]["params"]
     return LLM_MAPPING[llm_type](**kwargs)
