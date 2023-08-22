@@ -1,9 +1,12 @@
 from pendo.core import load_config, initialize_workspace_paths
-from pendo.llms import register_llms
+from pendo.llms import register_llms, get_llm
 from pendo.dataloaders import BaseDataloader, get_dataloader
 from pendo.indexers import BaseIndexer, register_indexers, get_indexer
+from pendo.agents import PerplexitySearchAgent
+
 from datetime import datetime, timedelta
 from tqdm.asyncio import tqdm_asyncio
+
 import asyncio
 import tiktoken
 
@@ -38,8 +41,17 @@ async def main():
             print(f"{k}: `{indexer_name}` updated")
         dataloader.save_timestamp(now)
     
-    
+    agent = PerplexitySearchAgent(get_llm("openai-gpt3.5-16k"), tiktoken.get_encoding("cl100k_base"), get_indexer("summary").index, get_indexer("chunks").index)
 
+    while True:
+        query = input("> ")
+        total_usage = None
+        async for message, usage in agent.run(query):
+            if usage is not None:
+                total_usage = usage if total_usage is None else total_usage + usage
+            print(message)
+            print("\033[2m" + str(total_usage) + "\033[0m")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())

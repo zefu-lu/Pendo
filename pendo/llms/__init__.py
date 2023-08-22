@@ -1,7 +1,7 @@
 from .message import *
 from .openai import OpenAILlm
 from .llama import LlamaLlm
-from .base import LlmUsage
+from .base import LlmUsage, BaseLlm
 
 LLM_MAPPING = {
     "openai": OpenAILlm,

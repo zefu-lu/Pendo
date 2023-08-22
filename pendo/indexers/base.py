@@ -9,7 +9,7 @@ class BaseIndexer(ABC):
         self.name = name
         self.chroma_client = chromadb.PersistentClient(path=str(CHROMA_PATH))
 
-        self.index = self.chroma_client.get_or_create_collection (name=self.name, embedding_function=chromadb.utils.embedding_functions.DefaultEmbeddingFunction())
+        self.index = self.chroma_client.get_or_create_collection(name=self.name, embedding_function=chromadb.utils.embedding_functions.DefaultEmbeddingFunction())
 
     @abstractmethod
     async def index_docs(docs: List[ChunkedDoc]):
