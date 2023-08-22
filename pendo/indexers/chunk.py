@@ -27,7 +27,7 @@ class ChunkIndexer(BaseIndexer):
                     metadata[k] = v
                 metadatas.append(metadata)
                 documents.append(chunk)
-        self.index.add(
+        self.index.upsert(
             ids = ids, 
             metadatas= metadatas,
             documents= documents

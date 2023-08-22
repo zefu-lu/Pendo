@@ -33,7 +33,7 @@ class SummaryIndexer(BaseIndexer):
             if v is None:
                 continue
             metadata[k] = v
-        self.index.add(
+        self.index.upsert(
             ids = [doc.id],
             metadatas = [metadata],
             documents = [result.content],
