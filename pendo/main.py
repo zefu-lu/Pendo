@@ -18,16 +18,19 @@ async def main():
     register_indexers(config["indexers"])
 
     dataloaders_config = config["dataloaders"]
+    local_timezone = datetime.now().astimezone().tzinfo
+    
+
     for k, v in dataloaders_config.items():
 
         dataloader = get_dataloader(v["type"], k, config=v["config"], tokenizer=tiktoken.get_encoding("cl100k_base"))
         print(f"{k}: checking docs after {dataloader.get_timestamp()}")
         doc_ids = await dataloader.retrieve_doc_ids()
         print(f"{k}: {len(doc_ids)} docs need to be indexed")
-        now = datetime.now()
+        timestamp = datetime.now(tz=local_timezone)
 
         if len(doc_ids) == 0:
-            dataloader.save_timestamp(now)
+            dataloader.save_timestamp(timestamp)
             continue
 
         print(f"{k}: gathering and chunking docs")
@@ -39,7 +42,7 @@ async def main():
             indexer = get_indexer(indexer_name)
             await indexer.index_docs(docs)
             print(f"{k}: `{indexer_name}` updated")
-        dataloader.save_timestamp(now)
+        dataloader.save_timestamp(timestamp)
     
     agent = PerplexitySearchAgent(get_llm("openai-gpt3.5-16k"), tiktoken.get_encoding("cl100k_base"), get_indexer("summary").index, get_indexer("chunks").index)
 

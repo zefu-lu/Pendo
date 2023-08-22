@@ -36,10 +36,13 @@ class BaseDataloader(ABC):
         timestamp_file = TIMESTAMPS_PATH / f"{self.name}.txt"
         if timestamp_file.exists():
             with open(timestamp_file, "r") as f:
-                return datetime.fromisoformat(f.read())
+                x = f.read()
+                x = x.strip()
+                return datetime.fromisoformat(x)
         return datetime.fromisoformat("1970-01-01T00:00:00+00:00")
     
     def save_timestamp(self, timestamp: datetime):
         timestamp_file = TIMESTAMPS_PATH / f"{self.name}.txt"
+
         with open(timestamp_file, "w") as f:
             f.write(timestamp.isoformat())

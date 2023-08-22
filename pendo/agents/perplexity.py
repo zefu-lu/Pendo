@@ -4,11 +4,11 @@ import itertools
 
 _PROMPT = """
         Follow exactly those 3 steps:
-        1. Read the document snippets above
-        2. Answer the question at the end using only the snippets.
-        3. For each sentence you reply, cite the snippet number that you used to answer the question at the end. For example, if you used snippet 2 and 3 in your answer, append [2, 3] to the sentence.
+        1. Read the documents above
+        2. Answer the question at the end using only the documents.
+        3. For each sentence you reply, cite the document number that you used to answer the question at the end. For example, if you used document 2 and 3 in your answer, append [2, 3] to the sentence.
 
-        If you don't think the snippets are relevant and are unsure of the answer, reply that you don't know about this topic and are always learning. Otherwise, reply with as much detail as possible.
+        If you don't think the documents are relevant and are unsure of the answer, reply that you don't know about this topic and are always learning. Otherwise, reply with as much detail as possible. Never cite anything that you didn't read.
 
         Now answer the question from the user:
         """
