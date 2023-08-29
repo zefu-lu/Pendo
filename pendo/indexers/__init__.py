@@ -1,10 +1,11 @@
 from .chunk import ChunkIndexer
 from .summary import SummaryIndexer
-from .base import BaseIndexer
+from .base import BaseIndexer, DefaultIndexer
 
 INDEXER_MAPPER = {
     "summary": SummaryIndexer,
     "chunk": ChunkIndexer,
+    "default": DefaultIndexer,
 }
 
 REGISTERED_INDEXERS = {}

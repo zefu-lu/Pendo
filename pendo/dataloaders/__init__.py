@@ -1,8 +1,10 @@
 from .base import ChunkedDoc, BaseDataloader
 from .notion import NotionDataloader
+from .gmail import GmailDataloader
 
 DATALOADER_MAPPER = {
     "notion": NotionDataloader,
+    "gmail": GmailDataloader,
 }
 
 def get_dataloader(dataloader_type: str, name: str, config, tokenizer):
