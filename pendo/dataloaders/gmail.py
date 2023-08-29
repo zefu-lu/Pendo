@@ -17,16 +17,22 @@ import logging
 GMAIL_TOKEN_PATH = TOKENS_PATH / "gmail_token.json"
 
 def _get_email_content(msg):
+    # If the email is multipart
     if 'parts' in msg['payload']:
+        # Search for HTML content first
         for part in msg['payload']['parts']:
-            mime_type = part['mimeType']
-            if mime_type == 'text/plain':
+            if part['mimeType'] == 'text/html':
                 return base64.urlsafe_b64decode(part['body']['data']).decode('utf-8')
-            elif mime_type == 'text/html':
-                # If you prefer HTML content over plain text, you can adjust the priority here
+        
+        # If HTML content isn't found, search for plain text content
+        for part in msg['payload']['parts']:
+            if part['mimeType'] == 'text/plain':
                 return base64.urlsafe_b64decode(part['body']['data']).decode('utf-8')
     else:
-        return base64.urlsafe_b64decode(msg['payload']['body']['data']).decode('utf-8')
+        # If there are no parts, but there's data in the payload
+        if 'data' in msg['payload']['body']:
+            return base64.urlsafe_b64decode(msg['payload']['body']['data']).decode('utf-8')
+    
     return None
 
 class GmailDataloader(BaseDataloader):
@@ -54,7 +60,7 @@ class GmailDataloader(BaseDataloader):
 
 
     async def retrieve_doc_ids(self, after: datetime = None) -> List[str]:
-        results = self.service.users().messages().list(userId="me", maxResults=10).execute()
+        results = self.service.users().messages().list(userId="me", maxResults=30).execute()
         messages = results.get("messages", [])
         return [msg["id"] for msg in messages]
 
@@ -69,6 +75,9 @@ class GmailDataloader(BaseDataloader):
             date_header = parsedate_to_datetime(date_header)
 
         content = _get_email_content(msg)
+        print("=============================")
+        print(subject_header)
+        print(content)
         return ChunkedDoc(
             id=doc_id,
             title=subject_header,

@@ -21,7 +21,8 @@ class DefaultIndexer(BaseIndexer):
 
     async def index_docs(self, docs: List[ChunkedDoc]):
         for doc in docs:
-            print(doc.title)
-            print("\n".join(doc.chunks))
-            print("\n\n")
+            pass
+            #print(doc.title)
+            #print("\n".join(doc.chunks))
+            #print("\n\n")
         
