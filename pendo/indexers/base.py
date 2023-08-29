@@ -14,3 +14,14 @@ class BaseIndexer(ABC):
     @abstractmethod
     async def index_docs(docs: List[ChunkedDoc]):
         raise NotImplementedError
+
+class DefaultIndexer(BaseIndexer):
+    def __init__(self, name, **kwargs):
+        super().__init__(name, **kwargs)
+
+    async def index_docs(self, docs: List[ChunkedDoc]):
+        for doc in docs:
+            print(doc.title)
+            print("\n".join(doc.chunks))
+            print("\n\n")
+        
