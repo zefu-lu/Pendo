@@ -8,8 +8,6 @@ from tqdm.asyncio import tqdm_asyncio
 
 class SummaryIndexer(BaseIndexer):
 
-
-
     def __init__(self, name, **kwargs):
         super().__init__(name, **kwargs)
         self.llm = get_llm(kwargs.get("llm", "openai-gpt3.5-16k"))
