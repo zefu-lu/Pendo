@@ -61,7 +61,14 @@ dataloaders:
           display: "Date of writing"
           property_name: ""
 
-
+  gmail:
+    type: gmail
+    indexers:
+      - default
+    config:
+      max_tokens: 1024
+      llm: "openai-gpt3.5-16k"
+      llm_coroutines: 5
 
 
 

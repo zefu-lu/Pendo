@@ -1,10 +1,10 @@
 from pendo.core import load_config, initialize_workspace_paths
 from pendo.llms import register_llms, get_llm
-from pendo.dataloaders import BaseDataloader, get_dataloader
-from pendo.indexers import BaseIndexer, register_indexers, get_indexer
+from pendo.dataloaders import get_dataloader
+from pendo.indexers import register_indexers, get_indexer
 from pendo.agents import PerplexitySearchAgent
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from tqdm.asyncio import tqdm_asyncio
 
 import asyncio
@@ -35,6 +35,7 @@ async def main():
 
         print(f"{k}: gathering and chunking docs")
         docs = await tqdm_asyncio.gather(*[dataloader.retrieve_chunked_doc(doc_id) for doc_id in doc_ids])
+        docs = list(filter(lambda item: item is not None, docs))
         print(f"{k}: indexing {len(docs)} docs")
 
         for indexer_name in v.get("indexers", []):
