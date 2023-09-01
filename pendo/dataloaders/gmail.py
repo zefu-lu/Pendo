@@ -160,7 +160,7 @@ class GmailDataloader(BaseDataloader):
         return ChunkedDoc(
             id=doc_id,
             title=subject_header,
-            last_edited_time=date_header,
+            last_edited_time=date_header.strftime("%Y-%m-%d %H:%M:%S"),
             chunks=[content],
             metadata={
                 "source": from_header,
