@@ -81,15 +81,12 @@ class GmailDataloader(BaseDataloader):
             creds = Credentials.from_authorized_user_file(GMAIL_TOKEN_PATH)
         
         if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                try:
-                    flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_GMAIL_PATH, ["https://www.googleapis.com/auth/gmail.readonly"])
-                    creds = flow.run_local_server(port=0)
-                except Exception as e:
-                    logging.error(f"Unable to initiate Gmail client: {e}")
-                    raise e
+            try:
+                flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_GMAIL_PATH, ["https://www.googleapis.com/auth/gmail.readonly"])
+                creds = flow.run_local_server(port=0)
+            except Exception as e:
+                logging.error(f"Unable to initiate Gmail client: {e}")
+                raise e
             with open(GMAIL_TOKEN_PATH, "w") as token:
                 token.write(creds.to_json())
         self.service = build("gmail", "v1", credentials=creds)
