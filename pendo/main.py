@@ -37,6 +37,9 @@ async def main():
         docs = await tqdm_asyncio.gather(*[dataloader.retrieve_chunked_doc(doc_id) for doc_id in doc_ids])
         docs = list(filter(lambda item: item is not None, docs))
         print(f"{k}: indexing {len(docs)} docs")
+        if len(docs) == 0:
+            dataloader.save_timestamp(timestamp)
+            continue
 
         for indexer_name in v.get("indexers", []):
             print(f"{k}: indexing to `{indexer_name}`")

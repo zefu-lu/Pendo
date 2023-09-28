@@ -82,6 +82,11 @@ class GmailDataloader(BaseDataloader):
         
         if not creds or not creds.valid:
             try:
+                if creds and creds.expired and creds.refresh_token:
+                    creds.refresh(Request())
+            except Exception as e:
+                logging.info(f"Unable to refresh Gmail token")
+            try:
                 flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_GMAIL_PATH, ["https://www.googleapis.com/auth/gmail.readonly"])
                 creds = flow.run_local_server(port=0)
             except Exception as e:
